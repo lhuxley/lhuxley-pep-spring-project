@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 import com.example.entity.Message;
 import com.example.repository.MessageRepository;
+import java.util.List;
 
 
 @Service
@@ -32,4 +33,11 @@ public class MessageService {
         
     }
 
+    @Autowired
+    public ResponseEntity<List<Message>> getAllMessages(){
+
+        
+        return ResponseEntity.status(HttpStatus.OK).body(messageRepository.findAll());
+        
+    }
 }
