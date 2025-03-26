@@ -1,6 +1,7 @@
 package com.example.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,12 +62,23 @@ public class MessageService {
         if(message.isEmpty())
             return ResponseEntity.status(200).build();
 
-        try {
-            messageRepository.deleteByMessageId(messageId);
-        } catch (Exception e) {
-            System.out.println("Error deleting message with ID " + messageId + ": " + e.getMessage());
-        }
+
+        messageRepository.deleteByMessageId(messageId);   
         return ResponseEntity.status(200).body(1);
         
     }
+
+    @Modifying
+    public ResponseEntity<Integer> patchMessage(Message message, @PathVariable Integer messageId){
+    
+        if(messageRepository.findByMessageId(messageId).isEmpty() || message.getMessageText().length() == 0 || message.getMessageText().length() > 255)
+            return ResponseEntity.status(400).build();
+
+       
+        messageRepository.updateMessageContentById(messageId, message.getMessageText());
+ 
+        return ResponseEntity.status(200).body(1);
+        
+    }
+
 }

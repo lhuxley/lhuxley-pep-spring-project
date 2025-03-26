@@ -73,4 +73,11 @@ public class SocialMediaController {
         return messageService.deleteMessage(messageId);
 
     }
+
+    @PatchMapping("/messages/{messageId}")
+    public ResponseEntity<Integer> patchMessage(@RequestBody Message message, @PathVariable Integer messageId) {
+
+        return messageService.patchMessage(message, messageId);
+
+    }
 }
