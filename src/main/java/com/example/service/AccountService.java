@@ -13,9 +13,7 @@ import com.example.repository.AccountRepository;
 @Service
 public class AccountService {
 
-    
-    AccountRepository accountRepository;
-
+    private final AccountRepository accountRepository;
 
     @Autowired
     public AccountService(AccountRepository accountRepository) {
@@ -23,23 +21,16 @@ public class AccountService {
     }
 
     @Transactional
-    public ResponseEntity<Account> createAccount(Account account){
-        if (accountRepository.findByUsername(account.getUsername()).isPresent())
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        if(account.getUsername().length() == 0 || account.getUsername().length() < 4)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        
-        return ResponseEntity.status(HttpStatus.OK).body(accountRepository.save(account));
-        
+    public Account createAccount(Account account) {
+        if (accountRepository.findByUsername(account.getUsername()).isPresent() ||
+                account.getUsername().length() < 4) {
+            return null;
+        }
+        return accountRepository.save(account);
     }
 
     @Transactional
-    public ResponseEntity<Account> login(Account account){
-        Optional<Account> foundAccount = accountRepository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
-        if (foundAccount.isEmpty())
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        
-        return ResponseEntity.status(HttpStatus.OK).body(foundAccount.get());
-        
+    public Optional<Account> login(Account account) {
+        return accountRepository.findByUsernameAndPassword(account.getUsername(), account.getPassword());
     }
 }
