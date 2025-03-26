@@ -11,18 +11,21 @@ import com.example.entity.Message;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, Long>{
-    
+public interface MessageRepository extends JpaRepository<Message, Long> {
+
     Boolean existsByPostedBy(Integer postedBy);
+
     List<Message> findAll();
+
     Optional<Message> findByMessageId(Integer messageId);
+
     void deleteByMessageId(Integer messageId);
 
+    List<Message> findByPostedBy(Integer postedBy);
 
     @Modifying
     @Transactional
     @Query("UPDATE Message m SET m.messageText = :messageText WHERE m.messageId = :messageId")
     int updateMessageContentById(@Param("messageId") Integer messageId, @Param("messageText") String messageText);
-    
-        
+
 }

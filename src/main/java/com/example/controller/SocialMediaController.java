@@ -80,4 +80,12 @@ public class SocialMediaController {
         return messageService.patchMessage(message, messageId);
 
     }
+
+    @GetMapping("/accounts/{accountId}/messages")
+    public ResponseEntity<List<Message>> getMessagesByAccountId(@PathVariable Integer accountId) {
+
+        return messageService.getMessagesByAccountId(accountId);
+
+    }
+
 }
