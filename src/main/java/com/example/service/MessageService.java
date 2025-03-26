@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.HttpStatus;
 import com.example.entity.Message;
+import java.util.Optional;
 import com.example.repository.MessageRepository;
 import java.util.List;
 
@@ -36,8 +37,18 @@ public class MessageService {
     @Autowired
     public ResponseEntity<List<Message>> getAllMessages(){
 
-        
         return ResponseEntity.status(HttpStatus.OK).body(messageRepository.findAll());
+        
+    }
+
+    
+    public ResponseEntity<Message> getMessageByMessageId(Integer messageId){
+        Optional<Message> message = messageRepository.findByMessageId(messageId);
+
+        if(message.isEmpty())
+            return ResponseEntity.status(200).build();
+
+        return ResponseEntity.status(HttpStatus.OK).body(message.get());
         
     }
 }
