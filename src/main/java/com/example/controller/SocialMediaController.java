@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.service.AccountService;
 import com.example.service.MessageService;
-import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
